@@ -1,0 +1,23 @@
+README : 
+
+// Auteur : DJEBIEN Tarik
+// Date    : 1 fevrier 2010
+// Objet  : exercices "commande do" de la feuille de TD/TP gestion de processus
+
+Ci-Joint le TP numero 5 de Programmation des systèmes :
+
+Arborescence de l'archive Tarik_Djebien_GROUPE4.tar.gz :
+    |
+    |_____README.txt
+    |_____do.c makeargv.c
+    |_____makefile
+    
+Remarques:
+
+Tout est fonctionnel
+
+Pour les commentaires :
+
+tarik.djebien@etudiant.univ-lille1.fr
+
+Cordialement.

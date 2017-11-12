@@ -1,0 +1,49 @@
+Le script a débuté sur dim. 19 déc. 2010 22:39:22 CET
+tarik@Tarik-Linux:~/Bureau$ make
+gcc -Wall -Werror -pedantic -ansi -D_XOPEN_SOURCE=500   -c -o maccess.o maccess.c
+gcc -o maccess maccess.o
+tarik@Tarik-Linux:~/Bureau$ ./maccess 
+Usage : maccess [-r|-w|-x] [FILE] {-v} 
+tarik@Tarik-Linux:~/Bureau$ touch foo
+tarik@Tarik-Linux:~/Bureau$ chmod -r foo
+tarik@Tarik-Linux:~/Bureau$ ll foo
+--w------- 1 tarik tarik 0 2010-12-19 22:41 foo
+tarik@Tarik-Linux:~/Bureau$ ./maccess -w foo && echo OK
+OK
+tarik@Tarik-Linux:~/Bureau$ echo $?
+0
+tarik@Tarik-Linux:~/Bureau$ ./maccess -r foo && echo OK
+tarik@Tarik-Linux:~/Bureau$ chmod 777 foo
+tarik@Tarik-Linux:~/Bureau$ ll foo
+-rwxrwxrwx 1 tarik tarik 0 2010-12-19 22:43 foo
+tarik@Tarik-Linux:~/Bureau$ ./maccess -r foo && echo OK
+OK 
+tarik@Tarik-Linux:~/Bureau$ ./maccess -x foo && echo OK
+OK
+tarik@Tarik-Linux:~/Bureau$ ./maccess -xr foo && echo OK
+OK
+tarik@Tarik-Linux:~/Bureau$ ./maccess -xrw foo && echo OK
+OK
+tarik@Tarik-Linux:~/Bureau$ ./maccess -d foo -v
+mode was incorrectly specified.
+tarik@Tarik-Linux:~/Bureau$ ./maccess -w fou -v
+A component of pathname does not exist or is a dangling symbolic link.
+tarik@Tarik-Linux:~/Bureau$ ./maccess -w foo/ -v
+A component used as a directory in pathname is not, in fact, a directory.
+tarik@Tarik-Linux:~/Bureau$ chmod -r foo
+tarik@Tarik-Linux:~/Bureau$ ./maccess -r foo -v
+Another error
+tarik@Tarik-Linux:~/Bureau$ ./prlimit 
+longueur maximale d'un nom d'entrée dans le système de fichiers : 255 
+longueur maximale d'un chemin dans le systeme de fichiers : 4096 
+tarik@Tarik-Linux:~/Bureau$ ./maccess -r foooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooooo -v
+pathname is too long.
+tarik@Tarik-Linux:~/Bureau$ mkdir new
+tarik@Tarik-Linux:~/Bureau$ for i in $(seq 500) ; do cd new;mkdir new; done
+tarik@Tarik-Linux:~/Bureau$ for i in $(seq 500) ; do cd ..; done
+tarik@Tarik-Linux:~/Bureau$ ./maccess -r 
+new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/new/ -v
+pathname is too long.
+tarik@Tarik-Linux:~/Bureau$ rm -rf new
+tarik@Tarik-Linux:~/Bureau$ make fclean
+Script complété sur dim. 19 déc. 2010 22:49:39 CET

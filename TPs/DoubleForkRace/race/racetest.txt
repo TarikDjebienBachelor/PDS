@@ -1,0 +1,57 @@
+Le script a débuté sur lun 31 jan 2011 20:57:32 CET
+youlhajen@lxa20:~/Bureau/forkfork&race/race$ make
+make: « race » est à jour.
+youlhajen@lxa20:~/Bureau/forkfork&race/race$ ./race 
+2   :[ 19887 ] je suis le processus fils a mi-parcours
+1   :[ 19886 ] je suis le processus fils a mi-parcours
+3   :[ 19888 ] je suis le processus fils a mi-parcours
+4   :[ 19889 ] je suis le processus fils a mi-parcours
+6   :[ 19891 ] je suis le processus fils a mi-parcours
+5   :[ 19890 ] je suis le processus fils a mi-parcours
+8   :[ 19893 ] je suis le processus fils a mi-parcours
+9   :[ 19894 ] je suis le processus fils a mi-parcours
+7   :[ 19892 ] je suis le processus fils a mi-parcours
+10   :[ 19895 ] je suis le processus fils a mi-parcours
+
+--------------- -  classement  ----------------
+
+1    :[19886] processus fils 
+2    :[19887] processus fils 
+3    :[19888] processus fils 
+4    :[19889] processus fils 
+5    :[19890] processus fils 
+6    :[19891] processus fils 
+7    :[19892] processus fils 
+8    :[19894] processus fils 
+9    :[19893] processus fils 
+10    :[19895] processus fils 
+
+-------------
+
+
+2   :[ 19899 ] je suis le processus fils a mi-parcours
+1   :[ 19898 ] je suis le processus fils a mi-parcours
+4   :[ 19901 ] je suis le processus fils a mi-parcours
+5   :[ 19902 ] je suis le processus fils a mi-parcours
+3   :[ 19900 ] je suis le processus fils a mi-parcours
+6   :[ 19903 ] je suis le processus fils a mi-parcours
+8   :[ 19905 ] je suis le processus fils a mi-parcours
+7   :[ 19904 ] je suis le processus fils a mi-parcours
+9   :[ 19906 ] je suis le processus fils a mi-parcours
+
+--------------- -  classement  ----------------
+
+1    :[19898] processus fils 
+2    :[19899] processus fils 
+3    :[19900] processus fils 
+4    :[19901] processus fils 
+5    :[19902] processus fils 
+6    :[19903] processus fils 
+7    :[19905] processus fils 
+8    :[19906] processus fils 
+9    :[19904] processus fils 
+10   :[ 19907 ] je suis le processus fils a mi-parcours
+10    :[19907] processus fils 
+youlhajen@lxa20:~/Bureau/forkfork&race/race$ exit
+
+Script complété sur lun 31 jan 2011 20:58:06 CET

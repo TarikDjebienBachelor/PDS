@@ -1,0 +1,20 @@
+Le script a débuté sur lun 31 jan 2011 20:54:46 CET
+djebien@lxa22:~/Bureau/TP4PDS$ pwd
+/home/l3/djebien/Bureau/TP4PDS
+djebien@lxa22:~/Bureau/TP4PDS$ make
+gcc -o ff ff.o forkfork.o
+djebien@lxa22:~/Bureau/TP4PDS$ make[1Ppwds aux[2Pexit./race[2Pexitps aux[3Pwdmake[Kls
+[0m[01;32mff[0m*  [0mff.c[0m  [0mff.o[0m  [01;32mforkfork.c[0m*  [0mforkfork.c~[0m  [0mforkfork.h[0m  [0mforkfork.o[0m  [0mmakefile[0m  [0mtypescript[0m
+[mdjebien@lxa22:~/Bureau/TP4PDS$ ./ff
+Je suis forkfork de PID [22852] du pere de PID [22836]
+Je suis le fils de PID [22853] du père de PID [22852]
+Je suis le petit fils de PID [22854] du fils de PID [22853]
+Attente de la terminaison du fils
+Le fils a ete arrete
+djebien@lxa22:~/Bureau/TP4PDS$ Le petit fils de PID [22854] est Orphelin, il fait donc son travail en appelant f().
+Son nouveau pere est init de PID [1]
+
+djebien@lxa22:~/Bureau/TP4PDS$ exit
+exit
+
+Script complété sur lun 31 jan 2011 20:55:14 CET

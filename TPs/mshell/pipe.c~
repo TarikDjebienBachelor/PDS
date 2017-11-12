@@ -1,0 +1,106 @@
+/* ------------------------------
+   $Id: pipe.c,v 1.2 2005/03/29 09:46:52 marquet Exp $
+   ------------------------------------------------------------
+
+   mshell - a job manager
+   
+*/
+
+#include<stdio.h>
+#include<stdlib.h>
+#include<unistd.h>
+#include<sys/wait.h>
+
+#include "cmd.h"
+#include "common.h"
+#include "pipe.h"
+#include "jobs.h"
+
+
+
+
+/*
+
+nbcmd : le nombre de commande sur la ligne de commande
+bg : background
+*/
+void do_pipe(char *cmds[MAXCMDS][MAXARGS], int nbcmd, int bg) {
+
+  if (nbcmd==2){
+    pid_t pid1,pid2;
+    int pipeFd[2];
+    
+    /* creation du tube */
+    pipe(pipeFd);
+    /*creation du processus fils pour la commande 1 */
+    pid1 = fork();
+    /* Fermeture du descripteur par le fils1, redirection sur STDOUT, execution de la commande 1*/
+    switch(pid1){
+    case -1: 
+      perror("fork() fils1 error ");
+      break;
+    case  0: /* Fils1 */
+      /* Fermeture du descripteur en sortie par le fils1 */
+      close(pipeFd[0]);
+      /* Redirection sur STDOUT */
+      dup2(pipeFd[1],STDOUT_FILENO);
+      /* Execution de la commande 1 */
+      execvp(*cmds[0],cmds[0]);
+      /* On quitte sur un echec si la commande 1 ne s'est pas executée */
+      exit(EXIT_FAILURE);
+      break;
+    default :  /* Pere */
+      /* Si on est en mode Background */
+      if (bg){
+	/* ajout de commande1 dans la table des jobs */      
+	jobs_addjob(pid1,BG,cmds[0][0]);
+      }
+      /* Sinon on est en avant plan */
+      else{
+	/* ajout de commande1 dans la table des jobs en FG */      
+	jobs_addjob(pid1,FG,cmds[0][0]);
+      }
+      break;
+    }
+      
+    /*creation du processus fils pour la commande 2 */
+    pid2 = fork();
+    /* Fermeture du descripteur par le fils2, redirection sur STDIN, execution de la commande 2*/
+    switch(pid2){
+    case -1:
+      perror("fork() fils2 error ");
+      break;
+    case  0: /* Fils2 */
+      /* Fermeture du descripteur par le fils2 a l'entrée */
+      close(pipeFd[1]);
+      /* Redirection de la sortie du pipe sur STDIN */
+      dup2(pipeFd[0],STDIN_FILENO);
+      /* Execution de la commande 2 */
+      execvp(*cmds[1],cmds[1]);
+      /* On quitte sur un echec si la commande 2 ne s'est pas executée */
+      exit(EXIT_FAILURE);
+      break;
+    default : /* Pere */
+      /* Si on est en mode Background */
+      if (bg){
+      /* ajout de commande2 dans la table des jobs */      
+      jobs_addjob(pid2,BG_PIPE,cmds[1][0]);
+      /* Fermeture de tout les descripteurs */
+      close(pipeFd[0]);
+      close(pipeFd[1]);
+      }
+      /* Sinon on est en avant plan */
+      else{
+      /* ajout de commande2 dans la table des jobs */      
+      jobs_addjob(pid2,FG_PIPE,cmds[1][0]);
+      /* Fermeture de tout les descripteurs */
+      close(pipeFd[0]);
+      close(pipeFd[1]);
+      /* On attend les terminaisons de la commande 2 */
+      waitfg(pid2);
+      }
+      break;
+    }
+  }
+  return;
+}

@@ -1,0 +1,23 @@
+README : 
+
+// Auteur : Djebien Tarik
+// Date    : 28 février 2011
+// Objet  : programmation fonctionnelle - Premiers contacts avec Ocaml
+
+Ci-Joint le TP numero 1 de Programmation fonctionnelle de ELFE :
+
+Arborescence de l'archive Tarik_Djebien_ELFE_GROUPE4.tar.gz :
+    |
+    |_____README.txt
+    |_____Cesar.ml
+    |_____Exercice1.ml
+    |_____Exercice2.ml
+    |_____Exercice3.ml
+    |_____fact.ml Fonctions.ml 
+    |_____typescript ( script de shell pour l'execution de Cesar )
+
+Pour les commentaires :
+
+tarik.djebien@etudiant.univ-lille1.fr
+
+Cordialement.

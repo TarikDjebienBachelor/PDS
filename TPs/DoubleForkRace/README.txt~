@@ -1,0 +1,29 @@
+README : 
+
+// Auteur : DJEBIEN Tarik & YOULHAJEN Jamal dine
+// Date    : 17 janvier 2010
+// Objet  : exercices 12 à 15 de la section Vérifier les droits d'accès... et expliquer de la feuille de TD/TP système de fichiers
+
+Ci-Joint le TP numero 2 de Programmation des systèmes :
+
+Arborescence de l'archive Tarik_Djebien_GROUPE4.tar.gz :
+    |
+    |_____README.txt
+    |_____mdu.c 
+    |_____Makefile (pour génerer l'éxecutable de mdu)
+    
+Remarques:
+
+Tests effectués sur :
+- Un répertoire vide
+- Un répertoire contenant plusieurs fichiers
+- Des liens physiques
+
+Ne fonctionne pas pour les liens symboliques.
+
+Pour les commentaires :
+
+tarik.djebien@etudiant.univ-lille1.fr
+jamaldine.youlhajen@etudiant.univ-lille1.fr
+
+Cordialement.

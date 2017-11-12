@@ -1,0 +1,127 @@
+/* ------------------------------
+   $Id: sighandlers.c,v 1.1 2005/03/17 13:00:46 marquet Exp $
+   ------------------------------------------------------------
+
+   mshell - a job manager
+   
+*/
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <sys/types.h>
+#include <signal.h>
+#include <sys/wait.h>
+#include <errno.h>
+#include <assert.h>
+
+#include "jobs.h"
+#include "common.h"
+#include "sighandlers.h"
+
+
+/*
+ * Signal - wrapper for the sigaction function
+ */
+int
+signal_wrapper(int signum, handler_t *handler) 
+{
+  struct sigaction sa;
+  sa.sa_handler = handler;
+  sigemptyset(&sa.sa_mask);
+  sa.sa_flags = SA_RESTART;
+  sigaction(signum, &sa, (struct sigaction *)0);
+  return 1;
+}
+
+
+/* 
+ * sigchld_handler - The kernel sends a SIGCHLD to the shell whenever
+ *     a child job terminates (becomes a zombie), or stops because it
+ *     received a SIGSTOP or SIGTSTP signal. The handler reaps all
+ *     available zombie children
+ */
+void
+sigchld_handler(int sig) 
+{    
+  int status;
+  pid_t child_pid;
+  struct job_t *j;
+
+  if (verbose)
+    printf("sigchld_handler: entering\n");
+  while ((child_pid = waitpid(-1,&status,WNOHANG|WUNTRACED))>0){
+    if (WIFSTOPPED(status)){
+      j = jobs_getjobpid(child_pid);
+      if (j==NULL)
+	printf("Fils perdu \n");
+      j->jb_state = ST;
+    if (verbose)
+      printf("sigchld_handler: job[%d] stopped.\n",j->jb_pid);  
+    }
+    else if (WIFEXITED(status)||WIFSIGNALED(status)){
+      j = jobs_getjobpid(child_pid);
+      if (j==NULL)
+	printf("Fils perdu");
+      jobs_deletejob(child_pid);
+      if (verbose)
+	printf("sigchld_handler: job[%d] terminated.\n",j->jb_pid);
+    }
+  }
+  
+  if (verbose)
+    printf("sigchld_handler: exiting\n");
+  
+  return;
+}
+
+/* 
+ * sigint_handler - The kernel sends a SIGINT to the shell whenver the
+ *    user types ctrl-c at the keyboard.  Catch it and send it along
+ *    to the foreground job.  
+ */
+void
+sigint_handler(int sig) 
+{
+  pid_t pid;
+    if (verbose)
+	printf("sigint_handler: entering\n");
+    /*on recupere le pid du job en FG*/
+    pid = jobs_fgpid();
+    /* On teste si il n'y a pas eu d'erreur 
+    et on envoie le signal SIGINT dans le cas contraire */
+    if ( pid > 0){
+    kill(pid,SIGINT);
+    if (verbose)
+      printf("Kill(%d,SIGINT)",pid);
+    }
+    if (verbose)
+	printf("sigint_handler: exiting\n");
+    
+    return;
+}
+
+/*
+ * sigtstp_handler - The kernel sends a SIGTSTP to the shell whenever
+ *     the user types ctrl-z at the keyboard. Catch it and suspend the
+ *     foreground job by sending it a SIGTSTP.  
+ */
+void
+sigtstp_handler(int sig) 
+{
+  pid_t pid; 
+    if (verbose)
+	printf("sigtstp_handler: entering\n");
+    /*on recupere le pid du job en FG*/
+    pid = jobs_fgpid();
+    /* On teste si il n'y a pas eu d'erreur
+    et on envoie le signal SIGINT dans le cas contraire */
+    if ( pid > 0){
+    kill(pid,SIGTSTP);
+    if (verbose)
+      printf("Kill(%d,SIGTSTP)",pid);
+    }
+    if (verbose)
+	printf("sigtstp_handler: exiting\n");
+    
+    return;
+}

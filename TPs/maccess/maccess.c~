@@ -1,0 +1,83 @@
+/* Object  : Programme qui implemente notre propre version de l'appel système access UNIX
+  * Author : Djebien Tarik
+  * Date    : 19/12/2010
+  */
+
+#include <stdlib.h>
+#include <string.h>
+#include <stdio.h>
+#include <unistd.h>
+#include <errno.h> 
+
+#define TRUE  1
+#define FALSE 0
+
+/* Termine l'execution du programme sur une erreur fatale.
+   Si assert est faux, affiche le message sur la sortie d'erreur
+   et termine en retournant la valeur status à l'environnement.
+*/
+void
+fatal
+(int assert, const char* message, int status){
+  if (assert == FALSE ) {
+    fprintf(stderr,"%s", message);
+    exit(status);
+  }
+}
+
+/* Affiche en cas d'echec de maccess, ce pourquoi l'accés est impossible */
+void
+verboseMode
+(int num){  
+  switch(num){
+    /* 1. Le droit d’acces demande au fichier n’est pas positionne */
+  case EINVAL : printf("mode was incorrectly specified.\n");break;
+    /* 2. Le fichier n’existe pas */ 
+  case ENOENT : printf("A component of pathname does not exist or is a dangling symbolic link.\n");break;
+    /* 3. Une des composantes du nom de fichier n’est pas un repertoire */ 
+  case ENOTDIR: printf("A component used as a directory in pathname is not, in fact, a directory.\n");break;
+    /* 4. Une des composantes du nom du fichier est trop longue */
+   
+    /* 5. Le nom du fichier est trop long  */
+  case ENAMETOOLONG: printf("pathname is too long.\n");break;
+    /* 6. Le nom du fichier comporte trop de liens symboliques */
+  case ELOOP : printf("Too many symbolic links were encountered in resolving pathname.\n");break;
+    /* 7. Autre erreur */
+  default : printf("Another error\n");
+    } 
+}
+
+int
+main
+(int argc, char* argv[]){
+  
+  /* Declaration */
+  char *option,*fichier;
+  int   res;
+  
+  /* Initialisation */
+  res = 0;
+  errno = 0;
+  
+  /* Traitement */
+  if (argc >= 3 && argc <=4){
+    fichier = argv[2];
+    if (strcmp(option = argv[1],"-r")==0)
+      res = access(fichier,R_OK);
+    else if (strcmp(option = argv[1],"-w")==0)
+      res = access(fichier,W_OK);
+    else if (strcmp(option = argv[1],"-x")==0)
+      res = access(fichier,X_OK);
+    else {
+      errno = EINVAL;
+      res = -1;
+    }
+    
+    if (argc==4 && strcmp(argv[3],"-v")==0 && res==-1)
+      verboseMode(errno);
+  }
+  else fatal(FALSE,"Usage : maccess [-r|-w|-x] [FILE] {-v} \n",EXIT_FAILURE);
+  
+  return res; 
+}
+

@@ -1,0 +1,18 @@
+	TP MDU
+	AYAR & NOUFLI
+	version Janvier 2011
+
+
+
+
+	La commande ./mdu, fonctionne en respectant les consignes données
+	Tests effectués sur :
+
+		- Un répertoire vide
+		- Un répertoire contenant quelques fichiers
+		- Des liens symboliques
+		- Des liens physiques
+
+
+
+	Cordialement.
